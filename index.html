@@ -10,8 +10,8 @@
   <div class="app">
     <header class="topbar">
       <div class="brand">
-        <span class="brand__title">Government Department Logo Maker</span>
-        <span class="brand__sub">Multi-style preview • Bilingual presets • PNG export</span>
+        <span class="brand__title">Parody Government Department Logo Maker</span>
+        <span class="brand__sub">Second Edition • Featuring pre-populated options</span>
       </div>
       <div class="topbar__actions">
         <button class="btn btn--ghost" type="button" onclick="showSaveImageModal()">Download</button>
@@ -24,28 +24,30 @@
           <h2 class="panel__title">Content</h2>
 
           <div class="field">
-            <label for="irishText">Irish (GA)</label>
+            <label for="irishText">Irish Langauge</label>
             <input type="text" id="irishText" placeholder="e.g. An Roinn Sláinte" oninput="handleInputChange()">
           </div>
 
           <div class="field">
-            <label for="secondText">English (EN)</label>
+            <label for="secondText">English Translation</label>
             <input type="text" id="secondText" placeholder="e.g. Department of Health" oninput="handleInputChange()">
           </div>
 
           <div class="field">
             <div class="field__row">
-              <label for="charLimit">Characters per line</label>
+              <label for="charLimit">Character Valve</label>
               <span class="pill"><span id="charLimitValue">27</span></span>
             </div>
             <input type="range" id="charLimit" min="15" max="45" value="27"
                    oninput="handleInputChange(); updateCharLimitValue()">
-            <p class="hint">Tune line-breaking for long department names.</p>
+            <p class="hint">You will likely need to use this for every logo. This allows for the text to fit *properly* in the PNG space, allowing for line breaking if necessary. Play around and see what suits best with your specific logo.</p>
           </div>
 
           <div class="panel__actions">
             <button class="btn btn--secondary" type="button" onclick="toggleAdditionalSettings()">Advanced positioning</button>
           </div>
+          <p class="hint">Only use for debugging purposes. Don't use on specific logos, unless something looks visibly wrong and cannot be fixed by the Character Valve.</p>
+
 
           <div id="additionalSettings" class="advanced hidden">
             <div class="grid2">
@@ -70,7 +72,7 @@
         </section>
 
         <section class="panel">
-          <h2 class="panel__title">Presets (editable)</h2>
+          <h2 class="panel__title">Presets</h2>
           <div class="preset-bar">
             <select id="presetSelect" onchange="applyPreset(this.value)">
               <option value="">Select a department…</option>
@@ -101,7 +103,7 @@
           </div>
 
           <p class="hint">
-            Presets populate GA/EN fields; you can then fine-tune line breaks and positioning.
+            You can edit the text on these.
           </p>
         </section>
 
@@ -110,7 +112,7 @@
           <div class="panel__actions">
             <button class="btn" type="button" onclick="showSaveImageModal()">Select style to download</button>
           </div>
-          <p class="hint">Export uses the original image-generation pipeline (unchanged).</p>
+          <p class="hint">Select the style you wish to export.</p>
         </section>
 
         <footer class="sidebar__footer">
@@ -126,7 +128,7 @@
             <div class="card__head">
               <div>
                 <h3>Standard</h3>
-                <p>Green / full-colour template</p>
+                <p>Use for normal cases</p>
               </div>
               <button class="btn btn--mini" type="button" onclick="saveImage('standard')">Download</button>
             </div>
@@ -137,7 +139,7 @@
             <div class="card__head">
               <div>
                 <h3>Black</h3>
-                <p>Mono black template</p>
+                <p>Use on clear white backgrounds</p>
               </div>
               <button class="btn btn--mini" type="button" onclick="saveImage('black')">Download</button>
             </div>
@@ -148,7 +150,7 @@
             <div class="card__head">
               <div>
                 <h3>White</h3>
-                <p>Mono white template</p>
+                <p>Use on clear black backgrounds</p>
               </div>
               <button class="btn btn--mini" type="button" onclick="saveImage('white')">Download</button>
             </div>
