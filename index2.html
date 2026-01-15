@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Maker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Government Department Logo Maker</h1>
+        </header>
+        <main>
+            <div class="controls">
+                <div class="control-group">
+                    <label for="irishText">Irish Text:</label>
+                    <input type="text" id="irishText" oninput="updatePreview()">
+                </div>
+                <div class="control-group">
+                    <label for="secondText">English Text:</label>
+                    <input type="text" id="secondText" oninput="updatePreview()">
+                </div>
+                <div class="control-group">
+                    <label for="charLimit">Characters Per Line: <span id="charLimitValue">27</span></label>
+                    <input type="range" id="charLimit" min="15" max="45" value="27" oninput="updatePreview(); updateCharLimitValue()">
+                </div>
+                <button onclick="toggleAdditionalSettings()">Advanced Options</button>
+                <div id="additionalSettings" class="hidden">
+                    <div class="control-group">
+                        <label for="irishTextY1">Irish Text Y1 Position:</label>
+                        <input type="number" id="irishTextY1" value="381" oninput="updatePreview()">
+                    </div>
+                    <div class="control-group">
+                        <label for="irishTextY2">Irish Text Y2 Position:</label>
+                        <input type="number" id="irishTextY2" value="221" oninput="updatePreview()">
+                    </div>
+                    <div class="control-group">
+                        <label for="secondTextY1">Second Text Y1 Position:</label>
+                        <input type="number" id="secondTextY1" value="540" oninput="updatePreview()">
+                    </div>
+                    <div class="control-group">
+                        <label for="secondTextY2">Second Text Y2 Position:</label>
+                        <input type="number" id="secondTextY2" value="700" oninput="updatePreview()">
+                    </div>
+                </div>
+                <button onclick="showSaveImageModal()">Select Style to Download</button>
+            </div>
+            <div class="canvas-container">
+                <canvas id="logoCanvas" width="2905" height="822"></canvas>
+            </div>    <header>Try the other version at <a href="https://biorach.github.io/gov">this link</a>. Biorach 2024</header>
+
+        </main>
+    </div>
+
+    <!-- Save Image Modal -->
+    <div id="saveImageModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" onclick="closeSaveImageModal()">&times;</span>
+            <h2>Select Style to Download</h2>
+            <button onclick="saveImage('standard')">Standard</button>
+            <button onclick="saveImage('black')">Black</button>
+            <button onclick="saveImage('white')">White</button>
+        </div>
+    </div>
+    <br />
+    <script src="scripts.js"></script>
+</body>
+</html>

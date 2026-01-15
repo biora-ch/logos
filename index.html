@@ -1,69 +1,183 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logo Maker</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logos • biora.ch</title>
+  <link rel="stylesheet" href="styles_new.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Government Department Logo Maker</h1>
-        </header>
-        <main>
-            <div class="controls">
-                <div class="control-group">
-                    <label for="irishText">Irish Text:</label>
-                    <input type="text" id="irishText" oninput="updatePreview()">
-                </div>
-                <div class="control-group">
-                    <label for="secondText">English Text:</label>
-                    <input type="text" id="secondText" oninput="updatePreview()">
-                </div>
-                <div class="control-group">
-                    <label for="charLimit">Characters Per Line: <span id="charLimitValue">27</span></label>
-                    <input type="range" id="charLimit" min="15" max="45" value="27" oninput="updatePreview(); updateCharLimitValue()">
-                </div>
-                <button onclick="toggleAdditionalSettings()">Advanced Options</button>
-                <div id="additionalSettings" class="hidden">
-                    <div class="control-group">
-                        <label for="irishTextY1">Irish Text Y1 Position:</label>
-                        <input type="number" id="irishTextY1" value="381" oninput="updatePreview()">
-                    </div>
-                    <div class="control-group">
-                        <label for="irishTextY2">Irish Text Y2 Position:</label>
-                        <input type="number" id="irishTextY2" value="221" oninput="updatePreview()">
-                    </div>
-                    <div class="control-group">
-                        <label for="secondTextY1">Second Text Y1 Position:</label>
-                        <input type="number" id="secondTextY1" value="540" oninput="updatePreview()">
-                    </div>
-                    <div class="control-group">
-                        <label for="secondTextY2">Second Text Y2 Position:</label>
-                        <input type="number" id="secondTextY2" value="700" oninput="updatePreview()">
-                    </div>
-                </div>
-                <button onclick="showSaveImageModal()">Select Style to Download</button>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand__title">Government Department Logo Maker</span>
+        <span class="brand__sub">Multi-style preview • Bilingual presets • PNG export</span>
+      </div>
+      <div class="topbar__actions">
+        <button class="btn btn--ghost" type="button" onclick="showSaveImageModal()">Download</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <section class="panel">
+          <h2 class="panel__title">Content</h2>
+
+          <div class="field">
+            <label for="irishText">Irish (GA)</label>
+            <input type="text" id="irishText" placeholder="e.g. An Roinn Sláinte" oninput="handleInputChange()">
+          </div>
+
+          <div class="field">
+            <label for="secondText">English (EN)</label>
+            <input type="text" id="secondText" placeholder="e.g. Department of Health" oninput="handleInputChange()">
+          </div>
+
+          <div class="field">
+            <div class="field__row">
+              <label for="charLimit">Characters per line</label>
+              <span class="pill"><span id="charLimitValue">27</span></span>
             </div>
-            <div class="canvas-container">
-                <canvas id="logoCanvas" width="2905" height="822"></canvas>
-            </div>    <header>Try the other version at <a href="https://biorach.github.io/gov">this link</a>. Biorach 2024</header>
+            <input type="range" id="charLimit" min="15" max="45" value="27"
+                   oninput="handleInputChange(); updateCharLimitValue()">
+            <p class="hint">Tune line-breaking for long department names.</p>
+          </div>
 
-        </main>
-    </div>
+          <div class="panel__actions">
+            <button class="btn btn--secondary" type="button" onclick="toggleAdditionalSettings()">Advanced positioning</button>
+          </div>
 
-    <!-- Save Image Modal -->
-    <div id="saveImageModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close" onclick="closeSaveImageModal()">&times;</span>
-            <h2>Select Style to Download</h2>
-            <button onclick="saveImage('standard')">Standard</button>
-            <button onclick="saveImage('black')">Black</button>
-            <button onclick="saveImage('white')">White</button>
-        </div>
+          <div id="additionalSettings" class="advanced hidden">
+            <div class="grid2">
+              <div class="field">
+                <label for="irishTextY1">GA Y1</label>
+                <input type="number" id="irishTextY1" value="381" oninput="handleInputChange()">
+              </div>
+              <div class="field">
+                <label for="irishTextY2">GA Y2</label>
+                <input type="number" id="irishTextY2" value="221" oninput="handleInputChange()">
+              </div>
+              <div class="field">
+                <label for="secondTextY1">EN Y1</label>
+                <input type="number" id="secondTextY1" value="540" oninput="handleInputChange()">
+              </div>
+              <div class="field">
+                <label for="secondTextY2">EN Y2</label>
+                <input type="number" id="secondTextY2" value="700" oninput="handleInputChange()">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 class="panel__title">Presets (editable)</h2>
+          <div class="preset-bar">
+            <select id="presetSelect" onchange="applyPreset(this.value)">
+              <option value="">Select a department…</option>
+              <option value="taoiseach">Department of the Taoiseach</option>
+              <option value="finance">Department of Finance</option>
+              <option value="health">Department of Health</option>
+              <option value="justice">Department of Justice</option>
+              <option value="education">Department of Education and Youth</option>
+              <option value="housing">Department of Housing, Local Government and Heritage</option>
+              <option value="transport">Department of Transport</option>
+              <option value="agri">Department of Agriculture, Food and the Marine</option>
+              <option value="foreign">Department of Foreign Affairs and Trade</option>
+              <option value="social">Department of Social Protection</option>
+            </select>
+          </div>
+
+          <div class="preset-grid">
+            <button class="btn btn--chip" type="button" onclick="applyPreset('taoiseach')">Taoiseach</button>
+            <button class="btn btn--chip" type="button" onclick="applyPreset('finance')">Finance</button>
+            <button class="btn btn--chip" type="button" onclick="applyPreset('health')">Health</button>
+            <button class="btn btn--chip" type="button" onclick="applyPreset('justice')">Justice</button>
+            <button class="btn btn--chip" type="button" onclick="applyPreset('education')">Education</button>
+            <button class="btn btn--chip" type="button" onclick="applyPreset('housing')">Housing</button>
+            <button class="btn btn--chip" type="button" onclick="applyPreset('transport')">Transport</button>
+            <button class="btn btn--chip" type="button" onclick="applyPreset('agri')">Agriculture</button>
+            <button class="btn btn--chip" type="button" onclick="applyPreset('foreign')">Foreign Affairs</button>
+            <button class="btn btn--chip" type="button" onclick="applyPreset('social')">Social Protection</button>
+          </div>
+
+          <p class="hint">
+            Presets populate GA/EN fields; you can then fine-tune line breaks and positioning.
+          </p>
+        </section>
+
+        <section class="panel">
+          <h2 class="panel__title">Export</h2>
+          <div class="panel__actions">
+            <button class="btn" type="button" onclick="showSaveImageModal()">Select style to download</button>
+          </div>
+          <p class="hint">Export uses the original image-generation pipeline (unchanged).</p>
+        </section>
+
+        <footer class="sidebar__footer">
+          <span>logos.biora.ch</span>
+          <span class="muted">•</span>
+          <a class="link" href="https://biora.ch/" target="_blank" rel="noreferrer">biora.ch</a>
+        </footer>
+      </aside>
+
+      <main class="content">
+        <section class="preview-grid">
+          <div class="card">
+            <div class="card__head">
+              <div>
+                <h3>Standard</h3>
+                <p>Green / full-colour template</p>
+              </div>
+              <button class="btn btn--mini" type="button" onclick="saveImage('standard')">Download</button>
+            </div>
+            <canvas id="previewStandard" width="1200" height="329" aria-label="Standard preview"></canvas>
+          </div>
+
+          <div class="card">
+            <div class="card__head">
+              <div>
+                <h3>Black</h3>
+                <p>Mono black template</p>
+              </div>
+              <button class="btn btn--mini" type="button" onclick="saveImage('black')">Download</button>
+            </div>
+            <canvas id="previewBlack" width="1200" height="329" aria-label="Black preview"></canvas>
+          </div>
+
+          <div class="card">
+            <div class="card__head">
+              <div>
+                <h3>White</h3>
+                <p>Mono white template</p>
+              </div>
+              <button class="btn btn--mini" type="button" onclick="saveImage('white')">Download</button>
+            </div>
+            <canvas id="previewWhite" width="1200" height="329" aria-label="White preview"></canvas>
+          </div>
+        </section>
+
+        <!-- Master canvas (required by the existing generation functions; kept off-screen) -->
+        <section class="master">
+          <canvas id="logoCanvas" width="2905" height="822"></canvas>
+        </section>
+      </main>
     </div>
-    <br />
-    <script src="scripts.js"></script>
+  </div>
+
+  <!-- Save Image Modal -->
+  <div id="saveImageModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" onclick="closeSaveImageModal()">&times;</span>
+      <h2>Select Style to Download</h2>
+      <div class="modal-actions">
+        <button class="btn" onclick="saveImage('standard')">Standard</button>
+        <button class="btn" onclick="saveImage('black')">Black</button>
+        <button class="btn" onclick="saveImage('white')">White</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts.js"></script>
+  <script src="ui.js"></script>
 </body>
 </html>
