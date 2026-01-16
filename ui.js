@@ -79,6 +79,11 @@ function variantConfig(variant) {
   let textColor;
 
   switch (variant) {
+    case 'custom':
+      // Provided by the user via <input type="file">.
+      templateSrc = window.__customTemplateUrl || ((typeof baseImageSrc !== "undefined") ? baseImageSrc : 'BlankTemplate_4.png');
+      textColor = (document.getElementById('customTextColor')?.value) || '#004D44';
+      break;
     case 'black':
       templateSrc = (typeof blackTemplateSrc !== "undefined") ? blackTemplateSrc : 'BlankTemplate_2.png';
       textColor = '#000000';
@@ -95,6 +100,35 @@ function variantConfig(variant) {
   }
 
   return { templateSrc, textColor };
+}
+
+function handleCustomTemplateFile(file) {
+  if (!file) return;
+  // Revoke old object URL to avoid leaking.
+  if (window.__customTemplateUrl) {
+    try { URL.revokeObjectURL(window.__customTemplateUrl); } catch (_) {}
+  }
+  window.__customTemplateUrl = URL.createObjectURL(file);
+
+  // Warm the cache so preview/download is instant.
+  if (typeof loadImage === 'function') {
+    loadImage(window.__customTemplateUrl)
+      .then((img) => { window.__customTemplateImage = img; handleInputChange(); })
+      .catch(() => { /* Silent */ });
+  } else {
+    handleInputChange();
+  }
+}
+
+function clearCustomTemplate() {
+  if (window.__customTemplateUrl) {
+    try { URL.revokeObjectURL(window.__customTemplateUrl); } catch (_) {}
+  }
+  window.__customTemplateUrl = null;
+  window.__customTemplateImage = null;
+  const f = document.getElementById('customTemplateFile');
+  if (f) f.value = '';
+  handleInputChange();
 }
 
 async function renderVariantPreview(variant, targetCanvas) {
@@ -131,6 +165,7 @@ function renderAllPreviews() {
   const c1 = document.getElementById('previewStandard');
   const c2 = document.getElementById('previewBlack');
   const c3 = document.getElementById('previewWhite');
+  const c4 = document.getElementById('previewCustom');
 
   // Sequential rendering avoids concurrent font/image reflows.
   (async () => {
@@ -140,6 +175,8 @@ function renderAllPreviews() {
       await renderVariantPreview('black', c2);
       if (token !== __renderToken) return;
       await renderVariantPreview('white', c3);
+      if (token !== __renderToken) return;
+      await renderVariantPreview('custom', c4);
     } catch (e) {
       // Intentionally silent: preview failures should not break core export flow.
       // Use browser console for diagnostics.

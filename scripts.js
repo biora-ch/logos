@@ -85,6 +85,10 @@ function saveImage(variant) {
     let textColor;
 
     switch (variant) {
+        case 'custom':
+            templateSrc = window.__customTemplateUrl || baseImageSrc;
+            textColor = document.getElementById('customTextColor')?.value || '#004D44';
+            break;
         case 'black':
             templateSrc = blackTemplateSrc;
             textColor = '#000000';

@@ -112,6 +112,8 @@ a{ color: inherit; }
 }
 .field input[type="text"],
 .field input[type="number"],
+ .field input[type="file"],
+ .field input[type="color"],
 select{
   width:100%;
   padding:10px 11px;
@@ -120,6 +122,15 @@ select{
   background: rgba(0,0,0,0.25);
   color: var(--text);
   outline:none;
+}
+
+/* Normalise colour picker and file input so they match the UI rhythm */
+.field input[type="color"]{
+  padding:6px;
+  height:42px;
+}
+.field input[type="file"]{
+  padding:8px 11px;
 }
 .field input[type="text"]::placeholder{ color: rgba(255,255,255,0.35); }
 .field input:focus, select:focus{
